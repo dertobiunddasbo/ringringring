@@ -15,6 +15,20 @@ export default function TresorApp() {
   const [pressedKey, setPressedKey] = useState(null);
 
   useEffect(() => {
+    function handleKeyDown(e) {
+      if (e.key >= '0' && e.key <= '9') {
+        handleKeypadInput(e.key);
+      } else if (e.key === 'Backspace') {
+        handleDelete();
+      } else if (e.key === 'Enter') {
+        handleLinkPartner();
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [partnerCode]);
+
+  useEffect(() => {
     if (linkedPairs.get(userId) === partnerCode && linkedPairs.get(partnerCode) === userId) {
       setPartnerConfirmed(true);
       setError('');
