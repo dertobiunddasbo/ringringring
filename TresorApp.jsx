@@ -14,7 +14,9 @@ export default function TresorApp() {
   const [error, setError] = useState('');
   const [pressedKey, setPressedKey] = useState(null);
   const [countdown, setCountdown] = useState(0);
+  const [waitingForConfirmation, setWaitingForConfirmation] = useState(false);
 
+  // Tastatureingaben ermöglichen: Zahlen, Löschen (Backspace), Bestätigen (Enter)
   useEffect(() => {
     function handleKeyDown(e) {
       if (e.key >= '0' && e.key <= '9') {
@@ -33,20 +35,26 @@ export default function TresorApp() {
     let timer;
     if (countdown > 0) {
       timer = setTimeout(() => setCountdown(countdown - 1), 1000);
-    } else if (countdown === 0 && !partnerConfirmed && partnerCode) {
+    } else if (countdown === 0 && waitingForConfirmation && !partnerConfirmed) {
       setPartnerCode('');
+      setWaitingForConfirmation(false);
       setError('⏱️ Zeit abgelaufen – bitte erneut versuchen.');
     }
     return () => clearTimeout(timer);
-  }, [countdown]);
+  }, [countdown, waitingForConfirmation, partnerConfirmed]);
 
   useEffect(() => {
-    if (linkedPairs.get(userId) === partnerCode && linkedPairs.get(partnerCode) === userId) {
+    if (
+      waitingForConfirmation &&
+      linkedPairs.get(userId) === partnerCode &&
+      linkedPairs.get(partnerCode) === userId
+    ) {
       setPartnerConfirmed(true);
       setCountdown(0);
+      setWaitingForConfirmation(false);
       setError('');
     }
-  }, [partnerCode]);
+  }, [partnerCode, waitingForConfirmation]);
 
   function handleLinkPartner() {
     if (!partnerCode) return;
@@ -62,11 +70,13 @@ export default function TresorApp() {
       linkedPairs.set(partnerCode, userId);
       setPartnerConfirmed(true);
       setCountdown(0);
+      setWaitingForConfirmation(false);
       setError('');
     } else {
       linkedPairs.set(userId, partnerCode);
-      setError('⏳ Warten auf Bestätigung des Partners ...');
+      setWaitingForConfirmation(true);
       setCountdown(10);
+      setError('⏳ Warten auf Bestätigung des Partners ...');
     }
   }
 
