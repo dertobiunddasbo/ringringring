@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 
 const linkedPairs = new Map();
 
+function generateNumericId(length) {
+  return Array.from({ length }, () => Math.floor(Math.random() * 10)).join('');
+}
+
 export default function TresorApp() {
-  const [userId, setUserId] = useState(uuidv4().slice(0, 5));
-  const [userCode, setUserCode] = useState([4, 7]);
+  const [userId, setUserId] = useState(generateNumericId(5));
+  const [userCode, setUserCode] = useState([Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)]);
   const [partnerCode, setPartnerCode] = useState('');
   const [partnerConfirmed, setPartnerConfirmed] = useState(false);
   const [error, setError] = useState('');
@@ -29,18 +32,18 @@ export default function TresorApp() {
       <div className="w-full max-w-sm sm:max-w-md bg-black/90 text-white shadow-2xl rounded-3xl p-4 sm:p-6 space-y-6 border border-white/10 backdrop-blur animate-slide-up">
         <div className="flex justify-between items-center">
           <img src="https://upload.wikimedia.org/wikipedia/commons/a/ac/Ring_logo.svg" alt="Ring Logo" className="h-8 sm:h-10" />
-          <img src="https://de-de.ring.com/cdn/shop/files/ring_homepage_new_OCP_2880x1920_e99b7ffa-88e1-4414-b963-82a00681661b_1200x.png?v=1739908035" alt="Ring Kamera" className="h-12 sm:h-16 ml-4" />
+          <img src="/keypad.png" alt="Ring Pad" className="h-12 sm:h-14 ml-4" />
         </div>
 
         <h1 className="text-3xl sm:text-4xl font-extrabold text-center tracking-tight uppercase text-white drop-shadow-md">Tresor Code</h1>
 
         <div className="text-xs sm:text-sm text-gray-300 text-center leading-snug">
-          Zeige deinem Teampartner diesen Code –<br />
+          Zeige deinem Teampartner diesen Zahlencode –<br />
           wenn er ihn nutzt, wird dein Code automatisch übernommen.
         </div>
 
         <div className="text-center space-y-2">
-          <p className="text-white text-xs sm:text-sm font-medium">Dein persönlicher Code:</p>
+          <p className="text-white text-xs sm:text-sm font-medium">Dein persönlicher Zahlencode:</p>
           <div className="font-mono text-xl sm:text-2xl bg-white/10 inline-block px-4 sm:px-6 py-2 sm:py-3 rounded-xl shadow-inner tracking-widest animate-pulse backdrop-blur-sm">{userId}</div>
         </div>
 
@@ -52,11 +55,11 @@ export default function TresorApp() {
         </div>
 
         <div className="text-left space-y-2">
-          <label className="block text-xs sm:text-sm font-semibold">Partnercode eingeben:</label>
+          <label className="block text-xs sm:text-sm font-semibold">Partner-Zahlencode eingeben:</label>
           <input
             className="border border-white/20 bg-white/10 text-white px-3 sm:px-4 py-2 rounded-xl w-full shadow-sm focus:outline-none focus:ring-2 focus:ring-white text-sm"
             type="text"
-            placeholder="z. B. abc12"
+            placeholder="z. B. 12345"
             value={partnerCode}
             onChange={e => setPartnerCode(e.target.value)}
           />
