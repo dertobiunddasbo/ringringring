@@ -14,6 +14,13 @@ export default function TresorApp() {
   const [error, setError] = useState('');
   const [pressedKey, setPressedKey] = useState(null);
 
+  useEffect(() => {
+    if (linkedPairs.get(userId) === partnerCode && linkedPairs.get(partnerCode) === userId) {
+      setPartnerConfirmed(true);
+      setError('');
+    }
+  }, [partnerCode]);
+
   function handleLinkPartner() {
     if (!partnerCode) return;
     if (partnerCode === userId) {
@@ -30,7 +37,7 @@ export default function TresorApp() {
       setError('');
     } else {
       linkedPairs.set(userId, partnerCode);
-      setError('❌ Der Partner muss deinen Code zuerst eingeben.');
+      setError('⏳ Warten auf Bestätigung des Partners ...');
     }
   }
 
@@ -48,17 +55,16 @@ export default function TresorApp() {
     setTimeout(() => setPressedKey(null), 150);
   }
 
-  const isLinked = linkedPairs.get(userId) === partnerCode;
+  const isLinked = linkedPairs.get(userId) === partnerCode && linkedPairs.get(partnerCode) === userId;
 
   return (
     <div className="min-h-screen p-4 sm:p-6 bg-white flex items-center justify-center animate-fade-in">
-      <div className="w-full max-w-[420px] bg-white text-black shadow-2xl rounded-3xl p-4 sm:p-6 space-y-6 border border-gray-200 animate-slide-up">
-        <div className="flex justify-between items-center">
+      <div className="w-full max-w-sm bg-white text-black shadow-2xl rounded-3xl p-4 sm:p-6 space-y-6 border border-gray-200 animate-slide-up">
+        <div className="flex justify-start items-center">
           <img src="https://upload.wikimedia.org/wikipedia/commons/a/ac/Ring_logo.svg" alt="Ring Logo" className="h-8 sm:h-10" />
-          <img src="/keypad.png" alt="Ring Pad" className="h-16 sm:h-20 ml-4 rounded" />
         </div>
 
-        <h1 className="text-xl sm:text-2xl font-bold text-center tracking-tight uppercase text-black">THE ALL STAR DEFENSE FOR YOUR HOME</h1>
+        <h1 className="text-lg sm:text-xl font-bold text-center tracking-tight uppercase text-black leading-snug">THE ALL STAR DEFENSE FOR YOUR HOME</h1>
 
         <div className="text-xs sm:text-sm text-gray-700 text-center leading-snug">
           Zeige deinem Teampartner diesen Zahlencode –<br />
