@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import QRCode from 'qrcode.react';
+import { QRCode } from 'qrcode.react';
 
 export default function TresorApp() {
   const [userId, setUserId] = useState(uuidv4().slice(0, 6));
