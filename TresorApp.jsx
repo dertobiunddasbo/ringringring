@@ -49,13 +49,13 @@ export default function TresorApp() {
 
   return (
     <div className="min-h-screen p-4 sm:p-6 bg-black flex items-center justify-center animate-fade-in">
-      <div className="w-full max-w-sm sm:max-w-md bg-black/90 text-white shadow-2xl rounded-3xl p-4 sm:p-6 space-y-6 border border-white/10 backdrop-blur animate-slide-up">
+      <div className="w-full max-w-[420px] bg-black/90 text-white shadow-2xl rounded-3xl p-4 sm:p-6 space-y-6 border border-white/10 backdrop-blur animate-slide-up">
         <div className="flex justify-between items-center">
           <img src="https://upload.wikimedia.org/wikipedia/commons/a/ac/Ring_logo.svg" alt="Ring Logo" className="h-8 sm:h-10" />
-          <img src="/keypad.png" alt="Ring Pad" className="h-20 sm:h-24 ml-4 rounded" />
+          <img src="/keypad.png" alt="Ring Pad" className="h-16 sm:h-20 ml-4 rounded" />
         </div>
 
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-center tracking-tight uppercase text-white drop-shadow-md">Tresor Code</h1>
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-center tracking-tight uppercase text-white drop-shadow-md">Tresor Code</h1>
 
         <div className="text-xs sm:text-sm text-gray-300 text-center leading-snug">
           Zeige deinem Teampartner diesen Zahlencode –<br />
@@ -83,7 +83,7 @@ export default function TresorApp() {
             {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
               <button
                 key={num}
-                className={`bg-transparent text-white py-2 rounded-xl text-xl font-bold transition transform duration-150 ${pressedKey === num ? 'scale-90 bg-white/40 text-black' : ''}`}
+                className={`bg-transparent text-white py-3 rounded-xl text-lg font-bold transition transform duration-150 ${pressedKey === num ? 'scale-90 bg-white/40 text-black' : ''}`}
                 onClick={() => handleKeypadInput(num.toString())}
               >
                 {num}
@@ -91,19 +91,19 @@ export default function TresorApp() {
             ))}
             <button
               onClick={handleDelete}
-              className={`bg-transparent text-white py-2 rounded-xl text-xl font-bold transition transform duration-150 ${pressedKey === 'del' ? 'scale-90 bg-white/40 text-black' : ''}`}
+              className={`bg-transparent text-white py-3 rounded-xl text-lg font-bold transition transform duration-150 ${pressedKey === 'del' ? 'scale-90 bg-white/40 text-black' : ''}`}
             >
               ⨉
             </button>
             <button
-              className={`bg-transparent text-white py-2 rounded-xl text-xl font-bold transition transform duration-150 ${pressedKey === 0 ? 'scale-90 bg-white/40 text-black' : ''}`}
+              className={`bg-transparent text-white py-3 rounded-xl text-lg font-bold transition transform duration-150 ${pressedKey === 0 ? 'scale-90 bg-white/40 text-black' : ''}`}
               onClick={() => handleKeypadInput('0')}
             >
               0
             </button>
             <button
               onClick={handleLinkPartner}
-              className={`bg-transparent text-white py-2 rounded-xl text-xl font-bold transition transform duration-150 ${pressedKey === 'enter' ? 'scale-90 bg-white/40 text-black' : ''}`}
+              className={`bg-transparent text-white py-3 rounded-xl text-lg font-bold transition transform duration-150 ${pressedKey === 'enter' ? 'scale-90 bg-white/40 text-black' : ''}`}
             >
               ✓
             </button>
