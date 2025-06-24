@@ -20,13 +20,16 @@ export default function TresorApp() {
       setError('❌ Du kannst deinen eigenen Code nicht als Partner verwenden.');
       return;
     }
-    const match = linkedPairs.get(partnerCode);
-    if (match === userId) {
+    const theirLinked = linkedPairs.get(partnerCode);
+    const myLinked = linkedPairs.get(userId);
+
+    if (theirLinked === userId || myLinked === partnerCode) {
       linkedPairs.set(userId, partnerCode);
       linkedPairs.set(partnerCode, userId);
       setPartnerConfirmed(true);
       setError('');
     } else {
+      linkedPairs.set(userId, partnerCode);
       setError('❌ Der Partner muss deinen Code zuerst eingeben.');
     }
   }
@@ -52,9 +55,10 @@ export default function TresorApp() {
       <div className="w-full max-w-[420px] bg-white text-black shadow-2xl rounded-3xl p-4 sm:p-6 space-y-6 border border-gray-200 animate-slide-up">
         <div className="flex justify-between items-center">
           <img src="https://upload.wikimedia.org/wikipedia/commons/a/ac/Ring_logo.svg" alt="Ring Logo" className="h-8 sm:h-10" />
+          <img src="/keypad.png" alt="Ring Pad" className="h-16 sm:h-20 ml-4 rounded" />
         </div>
 
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-center tracking-tight uppercase text-black">Tresor Code</h1>
+        <h1 className="text-xl sm:text-2xl font-bold text-center tracking-tight uppercase text-black">THE ALL STAR DEFENSE FOR YOUR HOME</h1>
 
         <div className="text-xs sm:text-sm text-gray-700 text-center leading-snug">
           Zeige deinem Teampartner diesen Zahlencode –<br />
