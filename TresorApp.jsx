@@ -21,13 +21,13 @@ export default function TresorApp() {
       return;
     }
     const match = linkedPairs.get(partnerCode);
-    if (match === userId || !match) {
+    if (match === userId) {
       linkedPairs.set(userId, partnerCode);
       linkedPairs.set(partnerCode, userId);
       setPartnerConfirmed(true);
       setError('');
     } else {
-      setError('❌ Dieser Code ist bereits mit jemand anderem verlinkt.');
+      setError('❌ Der Partner muss deinen Code zuerst eingeben.');
     }
   }
 
