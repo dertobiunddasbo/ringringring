@@ -4,7 +4,7 @@ import QRCode from 'react-qr-code';
 
 export default function TresorApp() {
   const [userId, setUserId] = useState(uuidv4().slice(0, 6));
-  const [userCode, setUserCode] = useState([4, 7]); // Fester Code: 47
+  const [userCode, setUserCode] = useState([4, 7]);
   const [partnerCode, setPartnerCode] = useState('');
   const [partnerConfirmed, setPartnerConfirmed] = useState(false);
   const [linkedCodes, setLinkedCodes] = useState({});
@@ -22,34 +22,34 @@ export default function TresorApp() {
   const isLinked = linkedCodes[userId];
 
   return (
-    <div className="min-h-screen p-4 bg-[#f4f6f8] flex items-center justify-center">
-      <div className="w-full max-w-md bg-white shadow-2xl rounded-3xl p-6 space-y-6">
-        <h1 className="text-3xl font-extrabold text-center text-[#1991eb]">🎯 Tresor Code Challenge</h1>
+    <div className="min-h-screen p-6 bg-gradient-to-br from-[#1991eb] to-[#0a4c9a] flex items-center justify-center">
+      <div className="w-full max-w-md bg-white shadow-2xl rounded-3xl p-6 space-y-6 border border-[#0a4c9a]/20">
+        <h1 className="text-4xl font-extrabold text-center text-[#0a4c9a] tracking-tight">🎯 Tresor Code</h1>
 
-        <div className="text-center space-y-2">
-          <p className="text-gray-700">Dein persönlicher Code:</p>
-          <div className="font-mono text-xl bg-gray-100 inline-block px-4 py-2 rounded-lg shadow-inner text-[#1991eb]">{userId}</div>
-          <div className="mx-auto mt-2 bg-white p-2 inline-block rounded shadow">
-            <QRCode value={userId} size={128} />
+        <div className="text-center space-y-3">
+          <p className="text-[#0f172a] text-sm font-medium">Dein persönlicher Code:</p>
+          <div className="font-mono text-2xl bg-[#f0f4f8] inline-block px-6 py-3 rounded-xl shadow-inner text-[#1991eb] tracking-widest">{userId}</div>
+          <div className="mx-auto mt-2 bg-white p-3 inline-block rounded-xl shadow-lg">
+            <QRCode value={userId} size={128} fgColor="#0a4c9a" bgColor="#ffffff" />
           </div>
         </div>
 
-        <div className="border p-4 rounded-xl bg-[#e6f4ff] text-center">
-          <p className="mb-2 font-semibold text-[#1991eb]">Dein Codefragment:</p>
-          <p className="text-3xl font-mono tracking-widest text-[#0f172a]">{userCode[0]} {isLinked ? userCode[1] : '_'}</p>
+        <div className="p-5 rounded-2xl bg-[#e6f4ff] text-center border border-[#1991eb]/20">
+          <p className="mb-1 font-semibold text-[#0a4c9a] text-sm">Dein Codefragment:</p>
+          <p className="text-4xl font-mono tracking-widest text-[#0f172a]">{userCode[0]} {isLinked ? userCode[1] : '_'}</p>
         </div>
 
-        <div className="text-left">
-          <label className="block mb-1 font-semibold text-[#0f172a]">Partnercode eingeben:</label>
+        <div className="text-left space-y-2">
+          <label className="block text-sm font-semibold text-[#0f172a]">Partnercode eingeben:</label>
           <input
-            className="border px-3 py-2 rounded-lg w-full shadow-md focus:outline-none focus:ring-2 focus:ring-[#1991eb]"
+            className="border border-[#d0d7de] px-4 py-2 rounded-xl w-full shadow-sm focus:outline-none focus:ring-2 focus:ring-[#1991eb]"
             type="text"
             placeholder="z. B. abc123"
             value={partnerCode}
             onChange={e => setPartnerCode(e.target.value)}
           />
           <button
-            className="mt-3 w-full py-2 bg-[#1991eb] hover:bg-[#0077cc] text-white font-bold rounded-lg transition duration-200"
+            className="w-full py-3 bg-[#1991eb] hover:bg-[#0077cc] text-white font-bold rounded-xl transition duration-200"
             onClick={handleLinkPartner}
           >
             ✅ Partner verlinken
@@ -57,8 +57,8 @@ export default function TresorApp() {
         </div>
 
         {partnerConfirmed && (
-          <div className="p-4 bg-green-100 text-center rounded-lg font-medium text-green-800">
-            ✅ Partner bestätigt! Dein vollständiger Code lautet: <strong className="text-xl">{userCode[0]}{userCode[1]}</strong>
+          <div className="p-4 bg-green-100 text-center rounded-xl font-medium text-green-800 border border-green-300">
+            ✅ Partner bestätigt! Dein vollständiger Code lautet: <strong className="text-2xl">{userCode[0]}{userCode[1]}</strong>
           </div>
         )}
       </div>
