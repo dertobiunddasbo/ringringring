@@ -9,6 +9,7 @@ export default function TresorApp() {
   const [partnerConfirmed, setPartnerConfirmed] = useState(false);
   const [linkedCodes, setLinkedCodes] = useState({});
   const [copied, setCopied] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -20,12 +21,17 @@ export default function TresorApp() {
 
   function handleLinkPartner() {
     if (!partnerCode) return;
+    if (partnerCode === userId) {
+      setError('❌ Du kannst deinen eigenen Code nicht als Partner verwenden.');
+      return;
+    }
     setLinkedCodes(prev => ({
       ...prev,
       [partnerCode]: true,
       [userId]: true
     }));
     setPartnerConfirmed(true);
+    setError('');
   }
 
   function copyCode() {
@@ -89,6 +95,7 @@ export default function TresorApp() {
           >
             ✅ Partner verlinken
           </button>
+          {error && <p className="text-red-400 text-sm mt-2">{error}</p>}
         </div>
 
         {partnerConfirmed && (
