@@ -48,28 +48,28 @@ export default function TresorApp() {
   const isLinked = linkedPairs.get(userId) === partnerCode;
 
   return (
-    <div className="min-h-screen p-4 sm:p-6 bg-black flex items-center justify-center animate-fade-in">
-      <div className="w-full max-w-[420px] bg-black/90 text-white shadow-2xl rounded-3xl p-4 sm:p-6 space-y-6 border border-white/10 backdrop-blur animate-slide-up">
+    <div className="min-h-screen p-4 sm:p-6 bg-white flex items-center justify-center animate-fade-in">
+      <div className="w-full max-w-[420px] bg-white text-black shadow-2xl rounded-3xl p-4 sm:p-6 space-y-6 border border-gray-200 animate-slide-up">
         <div className="flex justify-between items-center">
           <img src="https://upload.wikimedia.org/wikipedia/commons/a/ac/Ring_logo.svg" alt="Ring Logo" className="h-8 sm:h-10" />
           <img src="/keypad.png" alt="Ring Pad" className="h-16 sm:h-20 ml-4 rounded" />
         </div>
 
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-center tracking-tight uppercase text-white drop-shadow-md">Tresor Code</h1>
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-center tracking-tight uppercase text-black">Tresor Code</h1>
 
-        <div className="text-xs sm:text-sm text-gray-300 text-center leading-snug">
+        <div className="text-xs sm:text-sm text-gray-700 text-center leading-snug">
           Zeige deinem Teampartner diesen Zahlencode –<br />
           wenn er ihn nutzt, wird dein Code automatisch übernommen.
         </div>
 
         <div className="text-center space-y-2">
-          <p className="text-white text-xs sm:text-sm font-medium">Dein persönlicher Zahlencode:</p>
-          <div className="font-mono text-xl sm:text-2xl bg-white/10 inline-block px-4 sm:px-6 py-2 sm:py-3 rounded-xl shadow-inner tracking-widest animate-pulse backdrop-blur-sm">{userId}</div>
+          <p className="text-black text-xs sm:text-sm font-medium">Dein persönlicher Zahlencode:</p>
+          <div className="font-mono text-xl sm:text-2xl bg-gray-100 inline-block px-4 sm:px-6 py-2 sm:py-3 rounded-xl shadow-inner tracking-widest animate-pulse">{userId}</div>
         </div>
 
-        <div className="p-4 sm:p-5 rounded-2xl text-center border border-white/20 bg-black/30">
-          <p className="mb-1 font-semibold text-xs sm:text-sm text-white bg-black/60 inline-block px-2 py-1 rounded">Dein Codefragment:</p>
-          <p className="text-3xl sm:text-4xl font-mono tracking-widest text-white bg-black/70 inline-block px-4 py-2 rounded shadow-lg">
+        <div className="p-4 sm:p-5 rounded-2xl text-center border border-gray-300 bg-gray-100">
+          <p className="mb-1 font-semibold text-xs sm:text-sm text-gray-700 inline-block px-2 py-1 rounded">Dein Codefragment:</p>
+          <p className="text-3xl sm:text-4xl font-mono tracking-widest text-black inline-block px-4 py-2 rounded shadow-lg">
             {userCode[0]} {isLinked ? userCode[1] : '_'}
           </p>
         </div>
@@ -77,13 +77,13 @@ export default function TresorApp() {
         <div className="text-left space-y-2">
           <label className="block text-xs sm:text-sm font-semibold">Partner-Zahlencode eingeben:</label>
           <div className="flex justify-center mb-2">
-            <div className="font-mono text-2xl bg-white/10 px-4 py-2 rounded-xl tracking-widest w-full text-center">{partnerCode}</div>
+            <div className="font-mono text-2xl bg-gray-100 px-4 py-2 rounded-xl tracking-widest w-full text-center">{partnerCode}</div>
           </div>
-          <div className="grid grid-cols-3 gap-2" style={{ backgroundImage: 'url(/keypad.png)', backgroundSize: 'cover', backgroundPosition: 'center', padding: '1rem', borderRadius: '1rem' }}>
+          <div className="grid grid-cols-3 gap-2">
             {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
               <button
                 key={num}
-                className={`bg-transparent text-white py-3 rounded-xl text-lg font-bold transition transform duration-150 ${pressedKey === num ? 'scale-90 bg-white/40 text-black' : ''}`}
+                className={`bg-white text-blue-600 border border-blue-300 py-3 rounded-full text-lg font-bold transition transform duration-150 ${pressedKey === num ? 'scale-90 bg-blue-100' : ''}`}
                 onClick={() => handleKeypadInput(num.toString())}
               >
                 {num}
@@ -91,28 +91,28 @@ export default function TresorApp() {
             ))}
             <button
               onClick={handleDelete}
-              className={`bg-transparent text-white py-3 rounded-xl text-lg font-bold transition transform duration-150 ${pressedKey === 'del' ? 'scale-90 bg-white/40 text-black' : ''}`}
+              className={`bg-white text-blue-600 border border-blue-300 py-3 rounded-full text-lg font-bold transition transform duration-150 ${pressedKey === 'del' ? 'scale-90 bg-blue-100' : ''}`}
             >
               ⨉
             </button>
             <button
-              className={`bg-transparent text-white py-3 rounded-xl text-lg font-bold transition transform duration-150 ${pressedKey === 0 ? 'scale-90 bg-white/40 text-black' : ''}`}
+              className={`bg-white text-blue-600 border border-blue-300 py-3 rounded-full text-lg font-bold transition transform duration-150 ${pressedKey === 0 ? 'scale-90 bg-blue-100' : ''}`}
               onClick={() => handleKeypadInput('0')}
             >
               0
             </button>
             <button
               onClick={handleLinkPartner}
-              className={`bg-transparent text-white py-3 rounded-xl text-lg font-bold transition transform duration-150 ${pressedKey === 'enter' ? 'scale-90 bg-white/40 text-black' : ''}`}
+              className={`bg-white text-blue-600 border border-blue-300 py-3 rounded-full text-lg font-bold transition transform duration-150 ${pressedKey === 'enter' ? 'scale-90 bg-blue-100' : ''}`}
             >
               ✓
             </button>
           </div>
-          {error && <p className="text-red-400 text-xs sm:text-sm mt-2">{error}</p>}
+          {error && <p className="text-red-600 text-xs sm:text-sm mt-2">{error}</p>}
         </div>
 
         {partnerConfirmed && (
-          <div className="p-3 sm:p-4 bg-green-600/90 text-center rounded-xl font-medium text-white border border-green-300 animate-bounce text-sm">
+          <div className="p-3 sm:p-4 bg-green-500 text-center rounded-xl font-medium text-white border border-green-600 animate-bounce text-sm">
             ✅ Partner bestätigt! Dein vollständiger Code lautet: <strong className="text-xl sm:text-2xl">{userCode[0]}{userCode[1]}</strong>
           </div>
         )}
