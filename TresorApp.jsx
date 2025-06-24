@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import QRCode from 'react-qr-code';
-@import "tailwindcss";
-
 
 export default function TresorApp() {
   const [userId, setUserId] = useState(uuidv4().slice(0, 6));
