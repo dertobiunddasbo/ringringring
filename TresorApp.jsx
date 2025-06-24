@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { QRCode } from 'qrcode.react';
+import QRCode from 'react-qr-code';
 
 export default function TresorApp() {
   const [userId, setUserId] = useState(uuidv4().slice(0, 6));
@@ -29,7 +29,9 @@ export default function TresorApp() {
         <div className="text-center space-y-2">
           <p className="text-gray-700">Dein persönlicher Code:</p>
           <div className="font-mono text-xl bg-gray-100 inline-block px-4 py-2 rounded-lg shadow-inner text-[#1991eb]">{userId}</div>
-          <QRCode value={userId} size={128} className="mx-auto mt-2" />
+          <div className="mx-auto mt-2 bg-white p-2 inline-block rounded shadow">
+            <QRCode value={userId} size={128} />
+          </div>
         </div>
 
         <div className="border p-4 rounded-xl bg-[#e6f4ff] text-center">
