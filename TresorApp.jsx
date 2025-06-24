@@ -2,12 +2,13 @@ import { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import QRCode from 'react-qr-code';
 
+const linkedPairs = new Map();
+
 export default function TresorApp() {
   const [userId, setUserId] = useState(uuidv4().slice(0, 6));
   const [userCode, setUserCode] = useState([4, 7]);
   const [partnerCode, setPartnerCode] = useState('');
   const [partnerConfirmed, setPartnerConfirmed] = useState(false);
-  const [linkedCodes, setLinkedCodes] = useState({});
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState('');
 
@@ -25,11 +26,8 @@ export default function TresorApp() {
       setError('❌ Du kannst deinen eigenen Code nicht als Partner verwenden.');
       return;
     }
-    setLinkedCodes(prev => ({
-      ...prev,
-      [partnerCode]: true,
-      [userId]: true
-    }));
+    linkedPairs.set(userId, partnerCode);
+    linkedPairs.set(partnerCode, userId);
     setPartnerConfirmed(true);
     setError('');
   }
@@ -41,13 +39,13 @@ export default function TresorApp() {
     setTimeout(() => setCopied(false), 2000);
   }
 
-  const isLinked = linkedCodes[userId];
   const shareLink = `${window.location.origin}?partner=${userId}`;
+  const isLinked = linkedPairs.has(userId);
 
   return (
     <div
       className="min-h-screen p-6 bg-black flex items-center justify-center animate-fade-in"
-      style={{ backgroundImage: "url('https://images.unsplash.com/photo-1606925797303-545b67498d83?auto=format&fit=crop&w=1470&q=80')", backgroundSize: 'cover', backgroundPosition: 'center' }}
+      style={{ backgroundImage: "url('https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Olympiastadion_Berlin.jpg/640px-Olympiastadion_Berlin.jpg')", backgroundSize: 'cover', backgroundPosition: 'center' }}
     >
       <div className="w-full max-w-md bg-black/90 text-white shadow-2xl rounded-3xl p-6 space-y-6 border border-white/10 backdrop-blur animate-slide-up">
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Ring_Logo_2020.svg/512px-Ring_Logo_2020.svg.png" alt="Ring Logo" className="h-6 mb-2" />
@@ -73,7 +71,7 @@ export default function TresorApp() {
           </button>
         </div>
 
-        <div className="p-5 rounded-2xl text-center border border-white/20 bg-no-repeat bg-center bg-cover" style={{ backgroundImage: "url('https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Olympiastadion_Berlin.jpg/640px-Olympiastadion_Berlin.jpg')" }}>
+        <div className="p-5 rounded-2xl text-center border border-white/20 bg-no-repeat bg-center bg-cover" style={{ backgroundImage: "url('https://i.imgur.com/HQqj3Lc.png')" }}>
           <p className="mb-1 font-semibold text-sm text-white bg-black/60 inline-block px-2 py-1 rounded">Dein Codefragment:</p>
           <p className="text-4xl font-mono tracking-widest text-white bg-black/70 inline-block px-4 py-2 rounded shadow-lg">
             {userCode[0]} {isLinked ? userCode[1] : '_'}
