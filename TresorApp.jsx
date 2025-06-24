@@ -47,15 +47,10 @@ export default function TresorApp() {
       <div className="w-full max-w-sm sm:max-w-md bg-black/90 text-white shadow-2xl rounded-3xl p-4 sm:p-6 space-y-6 border border-white/10 backdrop-blur animate-slide-up">
         <div className="flex justify-between items-center">
           <img src="https://upload.wikimedia.org/wikipedia/commons/a/ac/Ring_logo.svg" alt="Ring Logo" className="h-8 sm:h-10" />
-          <img src="/keypad.png" alt="Ring Pad" className="h-20 sm:h-24 ml-4 rounded" />
         </div>
 
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-center tracking-tight uppercase text-white drop-shadow-md">Tresor Code</h1>
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-center tracking-tight uppercase text-white drop-shadow-md">Unsere RING Defense für dein HOME.</h1>
 
-        <div className="text-xs sm:text-sm text-gray-300 text-center leading-snug">
-          Zeige deinem Teampartner diesen Zahlencode –<br />
-          wenn er ihn nutzt, wird dein Code automatisch übernommen.
-        </div>
 
         <div className="text-center space-y-2">
           <p className="text-white text-xs sm:text-sm font-medium">Dein persönlicher Zahlencode:</p>
