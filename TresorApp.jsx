@@ -1,25 +1,21 @@
 import { useState, useEffect } from 'react';
 
-// Eine Map zur Speicherung der Verknüpfungen zwischen User-IDs
 const linkedPairs = new Map();
 
-// Funktion zur Generierung eines zufälligen numerischen Codes mit gegebener Länge
 function generateNumericId(length) {
   return Array.from({ length }, () => Math.floor(Math.random() * 10)).join('');
 }
 
 export default function TresorApp() {
-  // Initialisierung des Zustands
-  const [userId, setUserId] = useState(generateNumericId(5)); // Eigene zufällige ID
-  const [userCode] = useState([4, 7]); // Eigener Code bestehend aus zwei Zahlen
-  const [partnerCode, setPartnerCode] = useState(''); // Code des Partners
-  const [partnerConfirmed, setPartnerConfirmed] = useState(false); // Wurde der Partnercode bestätigt?
-  const [error, setError] = useState(''); // Fehlermeldungen anzeigen
-  const [pressedKey, setPressedKey] = useState(null); // Animation für gedrückte Tasten
-  const [countdown, setCountdown] = useState(0); // Countdown für Bestätigung durch Partner
-  const [waitingForConfirmation, setWaitingForConfirmation] = useState(false); // Status ob auf Bestätigung gewartet wird
+  const [userId, setUserId] = useState(generateNumericId(5));
+  const [userCode] = useState([4, 7]);
+  const [partnerCode, setPartnerCode] = useState('');
+  const [partnerConfirmed, setPartnerConfirmed] = useState(false);
+  const [error, setError] = useState('');
+  const [pressedKey, setPressedKey] = useState(null);
+  const [countdown, setCountdown] = useState(0);
+  const [waitingForConfirmation, setWaitingForConfirmation] = useState(false);
 
-  // Tastatureingaben behandeln – ermöglicht auch Eingabe mit echter Tastatur
   useEffect(() => {
     function handleKeyDown(e) {
       if (e.key >= '0' && e.key <= '9') {
@@ -34,28 +30,31 @@ export default function TresorApp() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [partnerCode]);
 
-  // Countdown runterzählen, bei Ablauf wird zurückgesetzt
   useEffect(() => {
     let timer;
     if (countdown > 0) {
       timer = setTimeout(() => setCountdown(countdown - 1), 1000);
     } else if (countdown === 0 && waitingForConfirmation && !partnerConfirmed) {
-      // Prüfen, ob Partner wirklich bestätigt hat
-      const confirmed = linkedPairs.get(userId) === partnerCode && linkedPairs.get(partnerCode) === userId;
-      if (confirmed) {
-        setPartnerConfirmed(true);
-        setWaitingForConfirmation(false);
-        setError('');
-      } else {
-        setPartnerCode('');
-        setWaitingForConfirmation(false);
-        setError('⏱️ Zeit abgelaufen – bitte erneut versuchen.');
-      }
+      setPartnerCode('');
+      setWaitingForConfirmation(false);
+      setError('⏱️ Zeit abgelaufen – bitte erneut versuchen.');
     }
     return () => clearTimeout(timer);
-  }, [countdown, waitingForConfirmation, partnerConfirmed, partnerCode, userId]);
+  }, [countdown, waitingForConfirmation, partnerConfirmed]);
 
-  // Funktion zur Verknüpfung mit Partnercode
+  useEffect(() => {
+    if (
+      waitingForConfirmation &&
+      linkedPairs.get(userId) === partnerCode &&
+      linkedPairs.get(partnerCode) === userId
+    ) {
+      setPartnerConfirmed(true);
+      setCountdown(0);
+      setWaitingForConfirmation(false);
+      setError('');
+    }
+  }, [partnerCode, waitingForConfirmation]);
+
   function handleLinkPartner() {
     if (!partnerCode) return;
     if (partnerCode === userId) {
@@ -80,7 +79,6 @@ export default function TresorApp() {
     }
   }
 
-  // Eingabe über die Keypad-Tasten
   function handleKeypadInput(num) {
     if (partnerCode.length < 5) {
       setPartnerCode(prev => prev + num);
@@ -89,57 +87,83 @@ export default function TresorApp() {
     }
   }
 
-  // Löschen einer Ziffer
   function handleDelete() {
     setPartnerCode(prev => prev.slice(0, -1));
     setPressedKey('del');
     setTimeout(() => setPressedKey(null), 150);
   }
 
-  // Überprüfung, ob gegenseitige Verknüpfung besteht
   const isLinked = linkedPairs.get(userId) === partnerCode && linkedPairs.get(partnerCode) === userId;
 
-  // JSX Struktur mit responsivem Design für Mobile-First
   return (
     <div className="min-h-screen w-full bg-white flex items-center justify-center px-4 sm:px-6 py-6">
-      <div className="max-w-sm w-full text-center space-y-6">
-        <h1 className="text-xl font-bold text-blue-600">THE ALL STAR DEFENSE FOR YOUR HOME</h1>
-        <p className="text-sm text-gray-700">Dein Code: <strong>{userId}</strong></p>
+      <div className="w-full max-w-md bg-white text-black shadow-2xl rounded-3xl p-5 sm:p-6 space-y-6 border border-gray-200">
+        <div className="flex justify-start items-center">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/a/ac/Ring_logo.svg" alt="Ring Logo" className="h-8 sm:h-10" />
+        </div>
 
-        <div className="grid grid-cols-3 gap-2">
-          {[1,2,3,4,5,6,7,8,9,0].map(n => (
+        <h1 className="text-lg sm:text-xl font-bold text-center tracking-tight uppercase text-black leading-snug">THE ALL STAR DEFENSE FOR YOUR HOME</h1>
+
+        <div className="text-sm sm:text-base text-gray-700 text-center leading-snug">
+          Zeige deinem Teampartner diesen Zahlencode –<br />
+          wenn er ihn nutzt, wird dein Code automatisch übernommen.
+        </div>
+
+        <div className="text-center space-y-2">
+          <p className="text-black text-sm sm:text-base font-medium">Dein persönlicher Zahlencode:</p>
+          <div className="font-mono text-xl sm:text-2xl bg-gray-100 inline-block px-6 py-3 rounded-xl shadow-inner tracking-widest animate-pulse">{userId}</div>
+        </div>
+
+        <div className="p-5 sm:p-6 rounded-2xl text-center border border-gray-300 bg-gray-100">
+          <p className="mb-1 font-semibold text-sm sm:text-base text-gray-700 inline-block px-2 py-1 rounded">Dein Codefragment:</p>
+          <p className="text-3xl sm:text-4xl font-mono tracking-widest text-black inline-block px-5 py-3 rounded shadow-lg">
+            {userCode[0]} {isLinked ? userCode[1] : '_'}
+          </p>
+        </div>
+
+        <div className="text-left space-y-3">
+          <label className="block text-sm sm:text-base font-semibold">Partner-Zahlencode eingeben:</label>
+          <div className="flex justify-center mb-1">
+            <div className="font-mono text-2xl bg-gray-100 px-4 py-3 rounded-xl tracking-widest w-full text-center">{partnerCode}</div>
+          </div>
+          {countdown > 0 && <p className="text-center text-sm text-gray-600">⏳ {countdown} Sekunden verbleiben</p>}
+          <div className="grid grid-cols-3 gap-3">
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
+              <button
+                key={num}
+                className={`bg-white text-blue-600 border border-blue-300 py-4 rounded-full text-lg font-bold transition transform duration-150 ${pressedKey === num ? 'scale-90 bg-blue-100' : ''}`}
+                onClick={() => handleKeypadInput(num.toString())}
+              >
+                {num}
+              </button>
+            ))}
             <button
-              key={n}
-              className={`rounded-full bg-blue-100 text-blue-800 p-4 text-xl ${pressedKey == n ? 'scale-110 shadow-lg' : ''}`}
-              onClick={() => handleKeypadInput(String(n))}
+              onClick={handleDelete}
+              className={`bg-white text-blue-600 border border-blue-300 py-4 rounded-full text-lg font-bold transition transform duration-150 ${pressedKey === 'del' ? 'scale-90 bg-blue-100' : ''}`}
             >
-              {n}
+              ⨉
             </button>
-          ))}
-          <button
-            className={`rounded-full bg-red-100 text-red-800 p-4 ${pressedKey === 'del' ? 'scale-110 shadow-lg' : ''}`}
-            onClick={handleDelete}
-          >
-            ⌫
-          </button>
-          <button
-            className="col-span-2 rounded-full bg-green-500 text-white py-4"
-            onClick={handleLinkPartner}
-          >
-            ✔
-          </button>
+            <button
+              className={`bg-white text-blue-600 border border-blue-300 py-4 rounded-full text-lg font-bold transition transform duration-150 ${pressedKey === 0 ? 'scale-90 bg-blue-100' : ''}`}
+              onClick={() => handleKeypadInput('0')}
+            >
+              0
+            </button>
+            <button
+              onClick={handleLinkPartner}
+              className={`bg-white text-blue-600 border border-blue-300 py-4 rounded-full text-lg font-bold transition transform duration-150 ${pressedKey === 'enter' ? 'scale-90 bg-blue-100' : ''}`}
+            >
+              ✓
+            </button>
+          </div>
+          {error && <p className="text-red-600 text-sm sm:text-base mt-2">{error}</p>}
         </div>
 
-        <div className="mt-4 text-gray-800">
-          {partnerConfirmed && isLinked ? (
-            <div className="text-green-600 font-bold text-lg">🔓 Dein Codefragment: {userCode.join('')}</div>
-          ) : (
-            <div>{error}</div>
-          )}
-          {waitingForConfirmation && countdown > 0 && (
-            <div className="text-sm text-gray-600 mt-2">⏳ {countdown} Sekunden verbleiben</div>
-          )}
-        </div>
+        {partnerConfirmed && (
+          <div className="p-4 sm:p-5 bg-green-500 text-center rounded-xl font-medium text-white border border-green-600 animate-bounce text-base">
+            ✅ Partner bestätigt! Dein vollständiger Code lautet: <strong className="text-2xl sm:text-3xl">{userCode[0]}{userCode[1]}</strong>
+          </div>
+        )}
       </div>
     </div>
   );
