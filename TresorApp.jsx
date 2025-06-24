@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import QRCode from 'react-qr-code';
 
@@ -9,6 +9,14 @@ export default function TresorApp() {
   const [partnerConfirmed, setPartnerConfirmed] = useState(false);
   const [linkedCodes, setLinkedCodes] = useState({});
   const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const partnerFromURL = urlParams.get('partner');
+    if (partnerFromURL) {
+      setPartnerCode(partnerFromURL);
+    }
+  }, []);
 
   function handleLinkPartner() {
     if (!partnerCode) return;
@@ -21,12 +29,14 @@ export default function TresorApp() {
   }
 
   function copyCode() {
-    navigator.clipboard.writeText(userId);
+    const link = `${window.location.origin}?partner=${userId}`;
+    navigator.clipboard.writeText(link);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   }
 
   const isLinked = linkedCodes[userId];
+  const shareLink = `${window.location.origin}?partner=${userId}`;
 
   return (
     <div
@@ -34,30 +44,30 @@ export default function TresorApp() {
       style={{ backgroundImage: "url('https://images.unsplash.com/photo-1606925797303-545b67498d83?auto=format&fit=crop&w=1470&q=80')", backgroundSize: 'cover', backgroundPosition: 'center' }}
     >
       <div className="w-full max-w-md bg-black/90 text-white shadow-2xl rounded-3xl p-6 space-y-6 border border-white/10 backdrop-blur animate-slide-up">
-        <img src="https://ring.com/assets/shared/logo-ring-bluetxt.svg" alt="Ring Logo" className="h-6 mb-2" />
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Ring_Logo_2020.svg/512px-Ring_Logo_2020.svg.png" alt="Ring Logo" className="h-6 mb-2" />
 
         <h1 className="text-4xl font-extrabold text-center tracking-tight uppercase text-white drop-shadow-md">Tresor Code</h1>
 
         <div className="text-sm text-gray-300 text-center leading-snug">
-          Zeige deinem Teampartner diesen Code oder teile den Link – <br />
-          sobald ihr euch verlinkt habt, schaltet ihr gemeinsam den vollständigen Zahlencode frei.
+          Zeige deinem Teampartner diesen QR-Code oder teile den Link – <br />
+          wenn er ihn scannt, wird dein Code automatisch übernommen.
         </div>
 
         <div className="text-center space-y-3">
           <p className="text-white text-sm font-medium">Dein persönlicher Code:</p>
           <div className="font-mono text-2xl bg-white/10 inline-block px-6 py-3 rounded-xl shadow-inner tracking-widest animate-pulse backdrop-blur-sm">{userId}</div>
           <div className="mx-auto mt-2 bg-white p-3 inline-block rounded-xl shadow-lg">
-            <QRCode value={userId} size={128} fgColor="#000000" bgColor="#ffffff" />
+            <QRCode value={shareLink} size={128} fgColor="#000000" bgColor="#ffffff" />
           </div>
           <button
             onClick={copyCode}
             className="mt-2 text-xs text-[#1991eb] underline hover:text-white"
           >
-            {copied ? '✔️ Code kopiert' : '🔗 Code kopieren'}
+            {copied ? '✔️ Link kopiert' : '🔗 Link kopieren'}
           </button>
         </div>
 
-        <div className="p-5 rounded-2xl text-center border border-white/20 bg-no-repeat bg-center bg-cover" style={{ backgroundImage: "url('https://i.imgur.com/HQqj3Lc.png')" }}>
+        <div className="p-5 rounded-2xl text-center border border-white/20 bg-no-repeat bg-center bg-cover" style={{ backgroundImage: "url('https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Olympiastadion_Berlin.jpg/640px-Olympiastadion_Berlin.jpg')" }}>
           <p className="mb-1 font-semibold text-sm text-white bg-black/60 inline-block px-2 py-1 rounded">Dein Codefragment:</p>
           <p className="text-4xl font-mono tracking-widest text-white bg-black/70 inline-block px-4 py-2 rounded shadow-lg">
             {userCode[0]} {isLinked ? userCode[1] : '_'}
