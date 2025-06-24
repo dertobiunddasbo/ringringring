@@ -3,16 +3,10 @@ import { v4 as uuidv4 } from 'uuid';
 
 export default function TresorApp() {
   const [userId, setUserId] = useState(uuidv4().slice(0, 6));
-  const [userCode, setUserCode] = useState(generateCode());
+  const [userCode, setUserCode] = useState([4, 7]); // Fester Code: 47
   const [partnerCode, setPartnerCode] = useState('');
   const [partnerConfirmed, setPartnerConfirmed] = useState(false);
   const [linkedCodes, setLinkedCodes] = useState({});
-
-  function generateCode() {
-    const first = Math.floor(Math.random() * 10);
-    const second = Math.floor(Math.random() * 10);
-    return [first, second];
-  }
 
   function handleLinkPartner() {
     if (!partnerCode) return;
