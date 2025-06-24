@@ -72,13 +72,13 @@ export default function TresorApp() {
   const isLinked = linkedPairs.get(userId) === partnerCode && linkedPairs.get(partnerCode) === userId;
 
   return (
-    <div className="min-h-screen p-4 sm:p-6 bg-white flex items-center justify-center animate-fade-in">
-      <div className="w-full max-w-sm bg-white text-black shadow-2xl rounded-3xl p-4 sm:p-6 space-y-6 border border-gray-200 animate-slide-up">
+    <div className="min-h-screen p-2 sm:p-4 bg-white flex items-center justify-center animate-fade-in">
+      <div className="w-full max-w-xs sm:max-w-sm bg-white text-black shadow-2xl rounded-3xl p-4 sm:p-6 space-y-6 border border-gray-200 animate-slide-up">
         <div className="flex justify-start items-center">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/a/ac/Ring_logo.svg" alt="Ring Logo" className="h-8 sm:h-10" />
+          <img src="https://upload.wikimedia.org/wikipedia/commons/a/ac/Ring_logo.svg" alt="Ring Logo" className="h-6 sm:h-8" />
         </div>
 
-        <h1 className="text-lg sm:text-xl font-bold text-center tracking-tight uppercase text-black leading-snug">THE ALL STAR DEFENSE FOR YOUR HOME</h1>
+        <h1 className="text-base sm:text-lg font-bold text-center tracking-tight uppercase text-black leading-snug">THE ALL STAR DEFENSE FOR YOUR HOME</h1>
 
         <div className="text-xs sm:text-sm text-gray-700 text-center leading-snug">
           Zeige deinem Teampartner diesen Zahlencode –<br />
@@ -87,12 +87,12 @@ export default function TresorApp() {
 
         <div className="text-center space-y-2">
           <p className="text-black text-xs sm:text-sm font-medium">Dein persönlicher Zahlencode:</p>
-          <div className="font-mono text-xl sm:text-2xl bg-gray-100 inline-block px-4 sm:px-6 py-2 sm:py-3 rounded-xl shadow-inner tracking-widest animate-pulse">{userId}</div>
+          <div className="font-mono text-lg sm:text-xl bg-gray-100 inline-block px-4 py-2 rounded-xl shadow-inner tracking-widest animate-pulse">{userId}</div>
         </div>
 
         <div className="p-4 sm:p-5 rounded-2xl text-center border border-gray-300 bg-gray-100">
           <p className="mb-1 font-semibold text-xs sm:text-sm text-gray-700 inline-block px-2 py-1 rounded">Dein Codefragment:</p>
-          <p className="text-3xl sm:text-4xl font-mono tracking-widest text-black inline-block px-4 py-2 rounded shadow-lg">
+          <p className="text-2xl sm:text-3xl font-mono tracking-widest text-black inline-block px-4 py-2 rounded shadow-lg">
             {userCode[0]} {isLinked ? userCode[1] : '_'}
           </p>
         </div>
@@ -100,13 +100,13 @@ export default function TresorApp() {
         <div className="text-left space-y-2">
           <label className="block text-xs sm:text-sm font-semibold">Partner-Zahlencode eingeben:</label>
           <div className="flex justify-center mb-2">
-            <div className="font-mono text-2xl bg-gray-100 px-4 py-2 rounded-xl tracking-widest w-full text-center">{partnerCode}</div>
+            <div className="font-mono text-xl bg-gray-100 px-4 py-2 rounded-xl tracking-widest w-full text-center">{partnerCode}</div>
           </div>
           <div className="grid grid-cols-3 gap-2">
             {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
               <button
                 key={num}
-                className={`bg-white text-blue-600 border border-blue-300 py-3 rounded-full text-lg font-bold transition transform duration-150 ${pressedKey === num ? 'scale-90 bg-blue-100' : ''}`}
+                className={`bg-white text-blue-600 border border-blue-300 py-3 rounded-full text-base sm:text-lg font-bold transition transform duration-150 ${pressedKey === num ? 'scale-90 bg-blue-100' : ''}`}
                 onClick={() => handleKeypadInput(num.toString())}
               >
                 {num}
@@ -114,19 +114,19 @@ export default function TresorApp() {
             ))}
             <button
               onClick={handleDelete}
-              className={`bg-white text-blue-600 border border-blue-300 py-3 rounded-full text-lg font-bold transition transform duration-150 ${pressedKey === 'del' ? 'scale-90 bg-blue-100' : ''}`}
+              className={`bg-white text-blue-600 border border-blue-300 py-3 rounded-full text-base sm:text-lg font-bold transition transform duration-150 ${pressedKey === 'del' ? 'scale-90 bg-blue-100' : ''}`}
             >
               ⨉
             </button>
             <button
-              className={`bg-white text-blue-600 border border-blue-300 py-3 rounded-full text-lg font-bold transition transform duration-150 ${pressedKey === 0 ? 'scale-90 bg-blue-100' : ''}`}
+              className={`bg-white text-blue-600 border border-blue-300 py-3 rounded-full text-base sm:text-lg font-bold transition transform duration-150 ${pressedKey === 0 ? 'scale-90 bg-blue-100' : ''}`}
               onClick={() => handleKeypadInput('0')}
             >
               0
             </button>
             <button
               onClick={handleLinkPartner}
-              className={`bg-white text-blue-600 border border-blue-300 py-3 rounded-full text-lg font-bold transition transform duration-150 ${pressedKey === 'enter' ? 'scale-90 bg-blue-100' : ''}`}
+              className={`bg-white text-blue-600 border border-blue-300 py-3 rounded-full text-base sm:text-lg font-bold transition transform duration-150 ${pressedKey === 'enter' ? 'scale-90 bg-blue-100' : ''}`}
             >
               ✓
             </button>
